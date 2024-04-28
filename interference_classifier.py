@@ -13,11 +13,16 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 model_dict = pickle.load(open('model.p', 'rb'))
 model = model_dict['model']
 
+lable_dict = {0: 'CLOSE', 1: 'OPEN', 2: 'PEACE'}
+
 while True:
   data_aux = []
-
+  x_ = []
+  y_ = []
   ret, frame = cap.read()
   frame_RGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+  frame = cv2.flip(frame, 1)
+  H, W, _ = frame.shape
   results = hands.process(frame_RGB)
 
   if results.multi_hand_landmarks:
@@ -35,9 +40,20 @@ while True:
         y = hand_landmarks.landmark[i].y
         data_aux.append(x)
         data_aux.append(y)
-    model.predict([np.asarray(data_aux)]) 
+        x_.append(x)
+        y_.append(y)
+    x1 = int(min(x_) * W)
+    y1 = int(min(y_) * H)
+    x2 = int(max(x_) * W)
+    y2 = int(max(y_) * H)
+    pridiction = model.predict([np.asarray(data_aux)]) 
+    pridiction_symbol = lable_dict[int(pridiction[0])]
+    print(pridiction_symbol)
+    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 4)
+    cv2.putText(frame, pridiction_symbol, (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.3 , (0, 0, 0), 3, cv2.LINE_AA)
   cv2.imshow('frame', frame)
-  cv2.waitKey(25)
+  if cv2.waitKey(25) & 0xFF == 27:
+    break
 
 cap.release()
 cv2.destroyAllWindows
