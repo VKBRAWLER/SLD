@@ -15,8 +15,6 @@ lable_dict = {0: 'CLOSE', 1: 'OPEN', 2: 'PEACE'}
 
 def pridict(frame):
   data_aux = []
-  x_ = []
-  y_ = []
   frame_RGB = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
   results = hands.process(frame_RGB)
   if results.multi_hand_landmarks:
@@ -26,8 +24,6 @@ def pridict(frame):
         y = hand_landmarks.landmark[i].y
         data_aux.append(x)
         data_aux.append(y)
-        x_.append(x)
-        y_.append(y)
     pridiction = model.predict([np.asarray(data_aux)]) 
     pridiction_symbol = lable_dict[int(pridiction[0])]
     return pridiction_symbol
@@ -51,4 +47,4 @@ while True:
     break
 
 cap.release()
-cv2.destroyAllWindows
+cv2.destroyAllWindows()
