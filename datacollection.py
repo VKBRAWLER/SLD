@@ -1,37 +1,66 @@
 import os
 import cv2
 
+# creates a directory to store the data
 DATA_DIR = './Data'
 if not os.path.exists(DATA_DIR):
   os.makedirs(DATA_DIR)
 
-number_of_classes = 3
-dataset_size = 100
+# number of classes and the size of the dataset
+name = str(input("Enter the your name please: "))
+number_of_classes = int(input("Enter the number of classes: "))
+labelList = []
+for i in range(number_of_classes):
+  labelList.append(str(input("Enter the label for class {}: ".format(i))))
+dataset_size = int(input("Enter the size of the dataset: "))
 
+# confirmation before intering training phase
+c = str(input("Note that there are {} class/es and the size of the dataset is {}\nWhich concludes in {} number of images. Do you still want to continue? Y/N: ".format(number_of_classes, dataset_size, number_of_classes*dataset_size)))
+while True:
+  if c == 'N' or c == 'n':
+    exit()
+  elif c == 'Y' or c == 'y':
+    break
+  else:
+    c = str(input("Please enter a valid input. Y/N: "))
+
+# initiates the webcam full screen
 cap = cv2.VideoCapture(0)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+
 for j in range(number_of_classes):
-  if not os.path.exists(os.path.join(DATA_DIR, str(j))):
-    os.makedirs(os.path.join(DATA_DIR, str(j)))
+  # creating folders/directory for each class
+  if not os.path.exists(os.path.join(DATA_DIR, labelList[j])):
+    os.makedirs(os.path.join(DATA_DIR, labelList[j]))
+  print('Collecting data for class {}'.format(labelList[j]))
 
-  print('Collecting data for class {}'.format(j))
-
-  done = False
   while True:
     ret, frame = cap.read()
     frame = cv2.flip(frame, 1)
-    cv2.putText(frame, 'Ready? Press "Q" ! :)', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3, cv2.LINE_AA)
+    cv2.putText(frame, 'Ready? Press "Space Bar" to Start!', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
     cv2.imshow('frame', frame)
-    if cv2.waitKey(25) == ord('q'):
+    if cv2.waitKey(25) == ord(' '):
       break
+  
+  # countdown before the training input starts
+  num = 3.7
+  while num > 0.5:
+    ret, frame = cap.read()
+    frame = cv2.flip(frame, 1)
+    cv2.putText(frame, "Training Input for {} will start in {}".format(labelList[j], int(num)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
+    cv2.imshow('frame', frame)
+    cv2.waitKey(25)
+    num -= 0.035
 
   counter = 0
   while counter < dataset_size:
     ret, frame = cap.read()
     frame = cv2.flip(frame, 1)
+    cv2.putText(frame, str(counter), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
     cv2.imshow('frame', frame)
-    cv2.waitKey(25)
-    cv2.imwrite(os.path.join(DATA_DIR, str(j), '{}.jpg'.format(counter)), frame)
-
+    cv2.waitKey(100)
+    cv2.imwrite(os.path.join(DATA_DIR, labelList[j], '{}_{}.jpg'.format(counter,name)), frame)
     counter += 1
 
 cap.release()

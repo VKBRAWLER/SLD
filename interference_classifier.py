@@ -3,7 +3,6 @@ import mediapipe as mp
 cap = cv2.VideoCapture(0)
 import pickle
 import numpy as np
-import pyautogui
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -14,7 +13,7 @@ hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3, max
 model_dict = pickle.load(open('model.p', 'rb'))
 model = model_dict['model']
 
-lable_dict = {0: 'CLOSE', 1: 'OPEN', 2: 'PEACE'}
+lable_dict = {0: 'paper', 1: 'rock', 2: 'scisor'}
 
 while True:
   data_aux = []
