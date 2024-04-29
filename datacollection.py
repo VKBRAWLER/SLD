@@ -37,7 +37,6 @@ for j in range(number_of_classes):
 
   while True:
     ret, frame = cap.read()
-    frame = cv2.flip(frame, 1)
     cv2.putText(frame, 'Ready? Press "Space Bar" to Start!', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
     cv2.imshow('frame', frame)
     if cv2.waitKey(25) == ord(' '):
@@ -47,7 +46,6 @@ for j in range(number_of_classes):
   num = 3.7
   while num > 0.5:
     ret, frame = cap.read()
-    frame = cv2.flip(frame, 1)
     cv2.putText(frame, "Training Input for {} will start in {}".format(labelList[j], int(num)), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
     cv2.imshow('frame', frame)
     cv2.waitKey(25)
@@ -56,12 +54,10 @@ for j in range(number_of_classes):
   counter = 0
   while counter < dataset_size:
     ret, frame = cap.read()
-    frame = cv2.flip(frame, 1)
     cv2.putText(frame, str(counter), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3, cv2.LINE_AA)
     cv2.imshow('frame', frame)
-    cv2.waitKey(100)
+    cv2.waitKey(25)
     cv2.imwrite(os.path.join(DATA_DIR, labelList[j], '{}_{}.jpg'.format(counter,name)), frame)
     counter += 1
-
 cap.release()
 cv2.destroyAllWindows()
