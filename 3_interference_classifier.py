@@ -4,7 +4,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-model_dict = pickle.load(open('./model.p', 'rb'))
+model_dict = pickle.load(open('./Fdata/model.p', 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)
@@ -15,7 +15,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3, max_num_hands=1)
 
-labels_dict = {0: 'close', 1: 'open', 2: 'rock'}
+labels_dict = {0: 'fuck', 1: 'l', 2: 'rock'}
 while True:
 
     data_aux = []
@@ -67,7 +67,8 @@ while True:
                     cv2.LINE_AA)
 
     cv2.imshow('frame', frame)
-    cv2.waitKey(1)
+    if cv2.waitKey(1) & 0xFF == 27:
+        break
 
 
 cap.release()

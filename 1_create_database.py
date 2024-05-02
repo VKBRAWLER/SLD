@@ -47,10 +47,12 @@ for className in os.listdir(DATA_DIR):
     else:
       print('No hands detected')
       notDetected.append(os.path.join(DATA_DIR, className, img_path))
-f = open('data.pickle', 'wb')
+if not os.path.exists('./Fdata'):
+  os.makedirs('./Fdata')
+f = open('./Fdata/raw_data.pickle', 'wb')
 pickle.dump({'data': data, 'labels': labels}, f)
 f.close()
-print('Data saved in data.pickle')
+print('Data saved in Fdata/raw_data.pickle')
 if len(notDetected) > 0:
   print('The following images were not detected:')
   for i in notDetected:
