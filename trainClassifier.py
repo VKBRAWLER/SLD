@@ -22,5 +22,5 @@ score = accuracy_score(y_test, y_pridict)
 print('Accuracy: {}'.format(score*100))
 
 f = open('model.p', 'wb')
-pickle.dump(({'model': model}), f)
+pickle.dump({'model': model}, f)
 f.close()

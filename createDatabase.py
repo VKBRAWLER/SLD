@@ -22,6 +22,8 @@ for className in os.listdir(DATA_DIR):
   for img_path in os.listdir(os.path.join(DATA_DIR, className)):
     data_aux = []
     print('Image: {}'.format(img_path))
+    x_ = []
+    y_ = []
     img = cv2.imread(os.path.join(DATA_DIR, className, img_path))
     img_RGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -32,15 +34,21 @@ for className in os.listdir(DATA_DIR):
         for i in range(len(hand_landmarks.landmark)):
           x = hand_landmarks.landmark[i].x
           y = hand_landmarks.landmark[i].y
-          data_aux.append(x)
-          data_aux.append(y)
+          x_.append(x)
+          y_.append(y)
+        for i in range(len(hand_landmarks.landmark)):
+          x = hand_landmarks.landmark[i].x
+          y = hand_landmarks.landmark[i].y
+          data_aux.append(x - min(x_))
+          data_aux.append(y - min(y_))
+
       data.append(data_aux)
       labels.append(index)
     else:
       print('No hands detected')
       notDetected.append(os.path.join(DATA_DIR, className, img_path))
 f = open('data.pickle', 'wb')
-pickle.dump(({'data': data, 'labels': labels}), f)
+pickle.dump({'data': data, 'labels': labels}, f)
 f.close()
 print('Data saved in data.pickle')
 if len(notDetected) > 0:
