@@ -8,6 +8,8 @@ model_dict = pickle.load(open('./Fdata/model.p', 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils

@@ -1,5 +1,5 @@
 import pickle
-
+import time
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -32,28 +32,55 @@ def pridict(frame):
     return(predicted_character)
 
 def perform(sign):
-  print(sign)
-  while True:
-    keyboard.press('space')
-    ret, frame = cap.read()
-    if pridict(frame) != sign:
-      break
-    if cv2.waitKey(20) & 0xFF == 27:
-      break
-  keyboard.release('space')
+  if sign == 'point':
+    print('point')
+    keyboard.press('o') # attack
+    time.sleep(0.5)
+    keyboard.release('o') # attack
+  elif sign == 'open':
+    print('open')
+    keyboard.press('p') # defend
+    time.sleep(0.5)
+    keyboard.release('p') # defend
+  elif sign == 'yo':
+    print('yo')
+    keyboard.press('shift') # step
+    time.sleep(0.5)
+    keyboard.release('shift') # step
+  elif sign == 'l':
+    print('l')
+    keyboard.press('w') # move forward
+    time.sleep(0.5)
+    keyboard.release('w') # move forward
+  elif sign == 'rock':
+    print('rock')
+    keyboard.press('space') # jump 
+    time.sleep(0.5)
+    keyboard.release('space') # jump 
+  elif sign == 'thumb':
+    print('thumb')
+    keyboard.press('l') # lock in
+    time.sleep(0.5)
+    keyboard.release('l') # lock in
 
 labels_dict = {0: 'close', 1: 'l', 2: 'open', 3: 'point', 4: 'rock', 5: 'thumb', 6: 'yo'}
+working = False
+prevSign = None
 while True:
   data_aux = []
   x_ = []
   y_ = []
   ret, frame = cap.read()
   sign = pridict(frame)
-  if sign == None:
+  if sign is None or sign == prevSign:
+    working = False
     continue
-  else:
+  if not working:
     perform(sign)
-  if cv2.waitKey(20) & 0xFF == 27:
+    working = True
+  prevSign = sign
+    
+  if cv2.waitKey(1) & 0xFF == 27:
     break
 cap.release()
 cv2.destroyAllWindows()
