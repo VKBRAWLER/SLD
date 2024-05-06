@@ -2,7 +2,8 @@ import os
 import cv2
 import mediapipe as mp
 import pickle
-import json
+import tqdm
+import csv
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -19,10 +20,8 @@ index = -1
 lable_dict = {}
 for className in os.listdir(DATA_DIR):
   index += 1
-  print('Class: {}'.format(className))
-  for img_path in os.listdir(os.path.join(DATA_DIR, className)):
+  for img_path in tqdm.tqdm(os.listdir(os.path.join(DATA_DIR, className))):
     data_aux = []
-    print('Image: {}'.format(img_path))
     x_ = []
     y_ = []
     img = cv2.imread(os.path.join(DATA_DIR, className, img_path))
@@ -46,8 +45,8 @@ for className in os.listdir(DATA_DIR):
       data.append(data_aux)
       labels.append(index)
     else:
-      print('No hands detected')
       notDetected.append(os.path.join(DATA_DIR, className, img_path))
+  print('Class: {} Completed'.format(className))
 if not os.path.exists('./Fdata'):
   os.makedirs('./Fdata')
 with open('./Fdata/raw_data.pickle', 'wb') as f:
@@ -60,7 +59,9 @@ if len(notDetected) > 0:
 print('label_dict: {}'.format(lable_dict))
 
 # Store lable_dict in a file
-with open('./Fdata/label_dict.json', 'w') as file:
-  json.dump(lable_dict, file)
+with open('./Fdata/label_dict.csv', 'w', newline='') as file:
+  writer = csv.writer(file)
+  for key in lable_dict.values():
+    writer.writerow([key])
   
-print('label_dict saved in Fdata/label_dict.json')
+print('label_dict saved in Fdata/label_dict.csv')
