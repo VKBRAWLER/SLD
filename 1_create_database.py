@@ -2,6 +2,7 @@ import os
 import cv2
 import mediapipe as mp
 import pickle
+import json
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -49,12 +50,17 @@ for className in os.listdir(DATA_DIR):
       notDetected.append(os.path.join(DATA_DIR, className, img_path))
 if not os.path.exists('./Fdata'):
   os.makedirs('./Fdata')
-f = open('./Fdata/raw_data.pickle', 'wb')
-pickle.dump({'data': data, 'labels': labels}, f)
-f.close()
+with open('./Fdata/raw_data.pickle', 'wb') as f:
+  pickle.dump({'data': data, 'labels': labels}, f)
 print('Data saved in Fdata/raw_data.pickle')
 if len(notDetected) > 0:
   print('The following images were not detected:')
   for i in notDetected:
     print(i)
 print('label_dict: {}'.format(lable_dict))
+
+# Store lable_dict in a file
+with open('./Fdata/label_dict.json', 'w') as file:
+  json.dump(lable_dict, file)
+  
+print('label_dict saved in Fdata/label_dict.json')

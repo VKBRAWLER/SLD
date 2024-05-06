@@ -4,6 +4,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 import keyboard
+from math import hypot
 
 model_dict = pickle.load(open('./Fdata/model.p', 'rb'))
 model = model_dict['model']
@@ -12,9 +13,7 @@ cap = cv2.VideoCapture(0)
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3, max_num_hands=1)
 
-def pridict(frame):
-  frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-  results = hands.process(frame_rgb)
+def pridict(results):
   if results.multi_hand_landmarks:
     for hand_landmarks in results.multi_hand_landmarks:
       for i in range(len(hand_landmarks.landmark)):
@@ -30,6 +29,23 @@ def pridict(frame):
     prediction = model.predict([np.asarray(data_aux[:42])])  # Limit the input data to 42 features
     predicted_character = labels_dict[int(prediction[0])]
     return(predicted_character)
+
+def get_distance(frame, results):
+  landmarkList = []
+  if results.multi_hand_landmarks:
+    for handlm in results.multi_hand_landmarks:
+      for idx, found_landmark in  enumerate(handlm.landmark):
+        print(found_landmark)
+        height, width, _ = frame.shape
+        x, y = int(found_landmark.x * width), int(found_landmark.y * height)
+        if idx == 4 or idx == 8:
+          landmark = [idx, x, y]
+          landmarkList.append(landmark)
+  if len(landmarkList) < 2:
+    return
+  (x1, y1), (x2, y2) = (landmarkList[0][1], landmarkList[0][2]), (landmarkList[1][1], landmarkList[1][2])
+  L = hypot(x2 - x1, y2 - y1)
+  return L
 
 def perform(sign):
   if sign == 'point':
@@ -71,16 +87,11 @@ while True:
   x_ = []
   y_ = []
   ret, frame = cap.read()
-  sign = pridict(frame)
-  if sign is None or sign == prevSign:
-    working = False
-    continue
-  if not working:
-    perform(sign)
-    working = True
-  prevSign = sign
-    
+  frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+  results = hands.process(frame_rgb)
+  cv2.imshow('frame', frame)
   if cv2.waitKey(1) & 0xFF == 27:
-    break
+    print(get_distance(frame, results))
+  
 cap.release()
 cv2.destroyAllWindows()

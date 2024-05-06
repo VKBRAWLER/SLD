@@ -23,6 +23,5 @@ score = accuracy_score(y_test, y_pridict)
 print('Accuracy: {}'.format(score*100))
 if not os.path.exists('./Fdata'):
   os.makedirs('./Fdata')
-f = open('./Fdata/model.p', 'wb')
-pickle.dump({'model': model}, f)
-f.close()
+with open('./Fdata/model.p', 'wb') as f:
+  pickle.dump({'model': model}, f)
