@@ -1,5 +1,5 @@
 import pickle
-
+import csv
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -17,7 +17,11 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3, max_num_hands=1)
 
-labels_dict = {0: 'close', 1: 'l', 2: 'open', 3: 'point', 4: 'rock', 5: 'thumb', 6: 'yo'}
+labels_dict = {}
+with open('./Fdata/label_dict.csv', 'r') as file:
+  reader = csv.reader(file)
+  for index, line in enumerate(reader):
+    labels_dict[int(index)] = line[0]
 while True:
 
     data_aux = []

@@ -5,7 +5,6 @@ import cv2.text
 import mediapipe as mp
 import numpy as np
 import keyboard
-import mouse
 from math import hypot
 import csv
 
