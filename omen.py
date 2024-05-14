@@ -93,8 +93,9 @@ while True:
   if sign == prevSign or sign is None:
     continue
   elif executing:
-    if sign == 'SHIFT':
+    if sign == 'P':
       print('canceled')
+      keyboard.release('4')
       executing = False
       key = None
       length = 0
@@ -157,6 +158,13 @@ while True:
     print(length)
     keyboard.press_and_release('e')
     executing = True
+  elif sign == 'P':
+    print('defusing')
+    keyboard.press('4')
+    executing = True
+    key = 'P'
+    if key == 'LLC':
+      keyboard.release('w')
   prevSign = sign
   # cv2.putText(frame, sign, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
   # cv2.imshow('frame', frame)

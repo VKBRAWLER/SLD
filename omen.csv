@@ -1,0 +1,16 @@
+IMAGE_NAME	Action	Sign	Remark
+C	C	open hand from back	enters the Shrouded Step Ability
+C1	Left Click	close hand from back	executes the Shrouded Step
+E	E	L sign from index finger and thumb	enters the Dark Cover Ability
+E1	Left Click	Decrease the distance between index finger and thumb	sends the Dark Cover futher away
+E2	Right Click	Increase the distance between index finger and thumb	brings the Dark Cover closer
+E3	E	"pull out baby finger to make a ""ROCK"" sign"	executes the Dark Cover
+LC	Left Click	index finger pointing 	fires a bullet
+LLC	Left Click	"index finger and middle finger pointing make a ""PEACE"" sign"	continuesly fires bullet until changed the sign
+Q	Q	"make a ""ROCK"" sign"	enters the Paranoia Ability 
+Q1	Left Click	open hand from front	executes the Paranoia
+R	R	thumb pointing side from front	reload
+P	4	baby finger pointing	plant spike
+SPACE	space	open hand with all fingers connected and thumb tuck inside palm	jump
+X	X	crosses index finger and middle finger	enters the From the Shadows ability
+X1	Left Click	close the hand from front	execute the From the Shadows
