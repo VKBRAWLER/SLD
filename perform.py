@@ -6,7 +6,7 @@ import numpy as np
 import keyboard
 from math import hypot
 
-model_dict = pickle.load(open('./Fdata/model.p', 'rb'))
+model_dict = pickle.load(open('./Odata/model.p', 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)

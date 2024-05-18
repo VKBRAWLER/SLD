@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-data_dict = pickle.load(open('./Fdata/raw_data.pickle', 'rb'))
+data_dict = pickle.load(open('./Odata/raw_data.pickle', 'rb'))
 
 data = np.asarray(data_dict['data'])
 labels = np.asarray(data_dict['labels'])
@@ -21,7 +21,7 @@ y_pridict = model.predict(x_test)
 score = accuracy_score(y_test, y_pridict)
 
 print('Accuracy: {}'.format(score*100))
-if not os.path.exists('./Fdata'):
-  os.makedirs('./Fdata')
-with open('./Fdata/model.p', 'wb') as f:
+if not os.path.exists('./Odata'):
+  os.makedirs('./Odata')
+with open('./Odata/model.p', 'wb') as f:
   pickle.dump({'model': model}, f)

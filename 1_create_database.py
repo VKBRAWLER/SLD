@@ -47,11 +47,11 @@ for className in os.listdir(DATA_DIR):
     else:
       notDetected.append(os.path.join(DATA_DIR, className, img_path))
   print('Class: {} Completed'.format(className))
-if not os.path.exists('./Fdata'):
-  os.makedirs('./Fdata')
-with open('./Fdata/raw_data.pickle', 'wb') as f:
+if not os.path.exists('./Odata'):
+  os.makedirs('./Odata')
+with open('./Odata/raw_data.pickle', 'wb') as f:
   pickle.dump({'data': data, 'labels': labels}, f)
-print('Data saved in Fdata/raw_data.pickle')
+print('Data saved in Odata/raw_data.pickle')
 if len(notDetected) > 0:
   print('The following images were not detected:')
   for i in notDetected:
@@ -59,9 +59,9 @@ if len(notDetected) > 0:
 print('label_dict: {}'.format(lable_dict))
 
 # Store lable_dict in a file
-with open('./Fdata/label_dict.csv', 'w', newline='') as file:
+with open('./Odata/label_dict.csv', 'w', newline='') as file:
   writer = csv.writer(file)
   for key in lable_dict.values():
     writer.writerow([key])
   
-print('label_dict saved in Fdata/label_dict.csv')
+print('label_dict saved in Odata/label_dict.csv')

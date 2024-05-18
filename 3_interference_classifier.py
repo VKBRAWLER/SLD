@@ -4,7 +4,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-model_dict = pickle.load(open('./Fdata/model.p', 'rb'))
+model_dict = pickle.load(open('./Odata/model.p', 'rb'))
 model = model_dict['model']
 
 cap = cv2.VideoCapture(0)
@@ -15,10 +15,10 @@ mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3, max_num_hands=1)
+hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3, max_num_hands=2)
 
 labels_dict = {}
-with open('./Fdata/label_dict.csv', 'r') as file:
+with open('./Odata/label_dict.csv', 'r') as file:
   reader = csv.reader(file)
   for index, line in enumerate(reader):
     labels_dict[int(index)] = line[0]
